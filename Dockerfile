@@ -1,35 +1,64 @@
-# Usando a imagem oficial PHP com Apache
-FROM php:8.1-apache
+APP_NAME=Laravel
+APP_ENV=production
+APP_KEY=base64:qskpF+33n1h8ed5/wqSkatDgvDvYXjrJ/6qj+3lgWfU=
+APP_DEBUG=false
+APP_TIMEZONE=UTC
+APP_URL=http://localhost
 
-# Instalar dependências para o Laravel (como extensões do PHP)
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libzip-dev \
-    git \
-    unzip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd zip pdo pdo_mysql
+APP_LOCALE=en
+APP_FALLBACK_LOCALE=en
+APP_FAKER_LOCALE=en_US
 
-# Habilitar mod_rewrite do Apache (importante para o Laravel)
-RUN a2enmod rewrite
+APP_MAINTENANCE_DRIVER=file
+APP_MAINTENANCE_STORE=database
 
-# Configurar o diretório de trabalho dentro do contêiner
-WORKDIR /var/www/html
+BCRYPT_ROUNDS=12
 
-# Copiar o código da aplicação para o contêiner
-COPY . /var/www/html
+LOG_CHANNEL=stack
+LOG_STACK=single
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=debug
 
-# Instalar as dependências do Laravel (via Composer)
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install --no-dev --optimize-autoloader
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel_reservas
+DB_USERNAME=user_laravel_reservas
+DB_PASSWORD=22hIku5alIsoPogaCAmaLu7oBeVim6
 
-# Configurar as permissões para o Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+SESSION_ENCRYPT=false
+SESSION_PATH=/
+SESSION_DOMAIN=null
 
-# Expor a porta 80 para o Apache
-EXPOSE 80
+BROADCAST_CONNECTION=log
+FILESYSTEM_DISK=local
+QUEUE_CONNECTION=database
 
-# Iniciar o Apache em primeiro plano
-CMD ["apache2-foreground"]
+CACHE_STORE=file
+CACHE_PREFIX=
+
+MEMCACHED_HOST=127.0.0.1
+
+REDIS_CLIENT=phpredis
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+MAIL_MAILER=log
+MAIL_HOST=127.0.0.1
+MAIL_PORT=2525
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS="hello@example.com"
+MAIL_FROM_NAME="${APP_NAME}"
+
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=
+AWS_USE_PATH_STYLE_ENDPOINT=false
+
+VITE_APP_NAME="${APP_NAME}"
